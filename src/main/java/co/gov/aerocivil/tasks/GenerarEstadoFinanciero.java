@@ -4,7 +4,6 @@ import co.gov.aerocivil.user_interfaces.PagEstadosFinancieros;
 import co.gov.aerocivil.user_interfaces.PagInicial;
 import co.gov.aerocivil.user_interfaces.PagPresupuesto;
 import co.gov.aerocivil.user_interfaces.PagTransparencia;
-import io.vavr.collection.Set;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
@@ -15,6 +14,8 @@ import org.openqa.selenium.remote.server.handler.SwitchToFrame;
 import org.openqa.selenium.remote.server.handler.SwitchToWindow;
 
 
+import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getDriver;
@@ -28,8 +29,6 @@ public class GenerarEstadoFinanciero implements Task {
         actor.attemptsTo(
         Click.on(PagInicial.MENU_TRANSPARENCIA),
                 Click.on(PagTransparencia.OPC_PRESUPUESTO)
-
-
        );
 
         String tab = getDriver().getWindowHandle();
@@ -38,12 +37,20 @@ public class GenerarEstadoFinanciero implements Task {
             getDriver().switchTo().window(winHandle);
         }
 
-        actor.attemptsTo(//Switch.toWindow(),
+        actor.attemptsTo(
                 Click.on(PagPresupuesto.ESTADOS_FINANCIEROS),
-                Click.on(PagEstadosFinancieros.BALANCES)
-
+                Click.on(PagEstadosFinancieros.BALANCES),
+                Click.on(PagEstadosFinancieros.PDF_ESTADO)
         );
 
+        String tab1 = getDriver().getWindowHandle();
+
+        for(String winHandle : getDriver().getWindowHandles()){
+            getDriver().switchTo().window(winHandle);
+        }
+
+        String titulo = getDriver().getCurrentUrl();
+        actor.remember("TITULO", titulo);
 
     }
 

@@ -1,5 +1,6 @@
 package co.gov.aerocivil.stepDefinitions;
 
+import co.gov.aerocivil.questions.Resultado;
 import co.gov.aerocivil.tasks.AbrirNavegador;
 import co.gov.aerocivil.tasks.GenerarEstadoFinanciero;
 import cucumber.api.java.Before;
@@ -9,8 +10,10 @@ import cucumber.api.java.es.Entonces;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
+import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 public class EstadoFinancieroStepDefinition {
 
@@ -31,9 +34,9 @@ public class EstadoFinancieroStepDefinition {
         theActorInTheSpotlight().attemptsTo(GenerarEstadoFinanciero.actual());
     }
 
-    @Entonces("^debera validar que se genero el archivo$")
-    public void deberaValidarQueSeGeneroElArchivo() {
-
+    @Entonces("^debera validar que se genero el archivo '(.*)'$")
+    public void deberaValidarQueSeGeneroElArchivo(String titulo) {
+        theActorInTheSpotlight().should(seeThat(Resultado.resultadoPagina(),equalTo(titulo)));
     }
 
 
